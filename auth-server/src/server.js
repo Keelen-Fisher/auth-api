@@ -9,10 +9,9 @@ const morgan = require('morgan');
 const errorHandler = require('./error-handlers/500.js');
 const notFound = require('./error-handlers/404.js');
 const authRoutes = require('./auth/routes.js');
-
 // Prepare the express app
 const app = express();
-
+const PORT = process.env.PORT || 3002;
 // App Level MW
 app.use(cors());
 app.use(morgan('dev'));
@@ -29,9 +28,9 @@ app.use(errorHandler);
 
 module.exports = {
   server: app,
-  start: (port) => {
-    app.listen(port, () => {
-      console.log(`Server Up on ${port}`);
+  start: (PORT) => {
+    app.listen(PORT, () => {
+      console.log(`Server Up on ${PORT}`);
     });
   },
 };
