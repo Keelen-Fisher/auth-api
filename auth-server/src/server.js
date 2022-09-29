@@ -14,7 +14,6 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 // App Level MW
 app.use(cors());
-app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +29,7 @@ module.exports = {
   server: app,
   start: (PORT) => {
     app.listen(PORT, () => {
+      if(!PORT) { throw new Error('Missing Port')}
       console.log(`Server Up on ${PORT}`);
     });
   },

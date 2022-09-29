@@ -2,7 +2,8 @@
 
 const express = require('express');
 const dataModules = require('../models');
-
+const permissions = require('../auth/middleware/acl');
+const bearerAuth = require('../auth/middleware/bearer');
 const router = express.Router();
 
 router.param('model', (req, res, next) => {
@@ -15,11 +16,11 @@ router.param('model', (req, res, next) => {
   }
 });
 
-router.get('/:model', handleGetAll);
-router.get('/:model/:id', handleGetOne);
-router.post('/:model', handleCreate);
-router.put('/:model/:id', handleUpdate);
-router.delete('/:model/:id', handleDelete);
+router.get('/:model', bearerAuth, handleGetAll);
+router.get('/:model/:id', bearAuth, handleGetOne);
+router.post('/:model', bearerAuth, permission('create'), handleCreate);
+router.put('/:model/:id', bearerAuth, permission('update'), handleUpdate);
+router.delete('/:model/:id', bearerAuth, permission('delete'), handleDelete);
 
 async function handleGetAll(req, res) {
   let allRecords = await req.model.get();
